@@ -1,31 +1,45 @@
-// SET BACKGROUND
+// CREATE PIXI APP
 const app = new PIXI.Application({ backgroundColor: 0x1099bb });
+
+// ADD CANVAS TO HTML
 document.body.appendChild(app.view);
 
+// REQUIRE CORS
+// const cors = require('cors');
+// app.use(cors());
+
+const reelContainer = new PIXI.Container();
+
+const REEL_WIDTH = 150;
+const SYMBOL_SIZE = 150;
 let reels = [];
 let tweening = [];
 let slotTextures;
 
+const number1 = "../PIXI/assets/img/1.png"
+const number2 = "../PIXI/assets/img/2.png"
+const number3 = "../PIXI/assets/img/3.png"
+const number4 = "../PIXI/assets/img/4.png"
+const number5 = "../PIXI/assets/img/5.png"
+
 // NUMBERS LOAD
 app.loader
-  .add("../assets/img/1.png", "../assets/img/1.png")
-  .add("../assets/img/2.png", "../assets/img/2.png")
-  .add("../assets/img/3.png", "../assets/img/3.png")
-  .add("../assets/img/4.png", "../assets/img/4.png")
-  .add("../assets/img/5.png", "../assets/img/5.png")
+  .add(number1, number1)
+  .add(number2, number2)
+  .add(number3, number3)
+  .add(number4, number4)
+  .add(number5, number5)
   .load(onAssetsLoaded);
 
-const REEL_WIDTH = 150;
-const SYMBOL_SIZE = 150;
 
-// onAssetsLoaded handler builds the example.
+// HANDLER BUILDS THE EXAMPLE
 function onAssetsLoaded() {
   slotTextures = [
-    PIXI.Texture.from("../assets/img/1.png"),
-    PIXI.Texture.from("../assets/img/2.png"),
-    PIXI.Texture.from("../assets/img/3.png"),
-    PIXI.Texture.from("../assets/img/4.png"),
-    PIXI.Texture.from("../assets/img/5.png"),
+    PIXI.Texture.from(number1),
+    PIXI.Texture.from(number2),
+    PIXI.Texture.from(number3),
+    PIXI.Texture.from(number4),
+    PIXI.Texture.from(number5)
   ];
 
   // CALL BUILD REELS FUNCTION
@@ -33,45 +47,10 @@ function onAssetsLoaded() {
 
   // CALL INTERFACE FUNCTION
   buildInterface();
-
-  
-
-  
-
-  // Listen for animate update.
-  app.ticker.add((delta) => {
-    // Update the slots.
-    for (let i = 0; i < reels.length; i++) {
-      const r = reels[i];
-      // Update blur filter y amount based on speed.
-      // This would be better if calculated with time in mind also. Now blur depends on frame rate.
-      r.blur.blurY = (r.position - r.previousPosition) * 8;
-      r.previousPosition = r.position;
-
-      // Update symbol positions on reel.
-      for (let j = 0; j < r.symbols.length; j++) {
-        const s = r.symbols[j];
-        const prevy = s.y;
-        s.y = ((r.position + j) % r.symbols.length) * SYMBOL_SIZE - SYMBOL_SIZE;
-        if (s.y < 0 && prevy > SYMBOL_SIZE) {
-          // Detect going over and swap a texture.
-          // This should in proper product be determined from some logical reel.
-          s.texture =
-            slotTextures[Math.floor(Math.random() * slotTextures.length)];
-          s.scale.x = s.scale.y = Math.min(
-            SYMBOL_SIZE / s.texture.width,
-            SYMBOL_SIZE / s.texture.height
-          );
-          s.x = Math.round((SYMBOL_SIZE - s.width) / 2);
-        }
-      }
-    }
-  });
 }
 
 // BUILD REELS
 function buildReels() {
-  const reelContainer = new PIXI.Container();
 
   for (let i = 0; i < 5; i++) {
     const rc = new PIXI.Container();
@@ -231,11 +210,41 @@ app.ticker.add((delta) => {
       remove.push(t);
     }
   }
-  
+
   for (let i = 0; i < remove.length; i++) {
     tweening.splice(tweening.indexOf(remove[i]), 1);
   }
 });
+
+// Listen for animate update.
+app.ticker.add((delta) => {
+    // Update the slots.
+    for (let i = 0; i < reels.length; i++) {
+      const r = reels[i];
+      // Update blur filter y amount based on speed.
+      // This would be better if calculated with time in mind also. Now blur depends on frame rate.
+      r.blur.blurY = (r.position - r.previousPosition) * 8;
+      r.previousPosition = r.position;
+
+      // Update symbol positions on reel.
+      for (let j = 0; j < r.symbols.length; j++) {
+        const s = r.symbols[j];
+        const prevy = s.y;
+        s.y = ((r.position + j) % r.symbols.length) * SYMBOL_SIZE - SYMBOL_SIZE;
+        if (s.y < 0 && prevy > SYMBOL_SIZE) {
+          // Detect going over and swap a texture.
+          // This should in proper product be determined from some logical reel.
+          s.texture =
+            slotTextures[Math.floor(Math.random() * slotTextures.length)];
+          s.scale.x = s.scale.y = Math.min(
+            SYMBOL_SIZE / s.texture.width,
+            SYMBOL_SIZE / s.texture.height
+          );
+          s.x = Math.round((SYMBOL_SIZE - s.width) / 2);
+        }
+      }
+    }
+  });
 
 // Basic lerp funtion.
 function lerp(a1, a2, t) {
