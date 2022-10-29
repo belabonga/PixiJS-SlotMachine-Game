@@ -1,12 +1,16 @@
+// STAGE SIZE
+const stageWidth = 480;
+const stageHeight = 240;
+
 // CREATE PIXI APP
-const app = new PIXI.Application({ backgroundColor: 0x1099bb });
+const app = new PIXI.Application({ 
+  width : stageWidth,
+  height : stageHeight,
+  backgroundColor: 0x1099bb
+});
 
-// ADD CANVAS TO HTML
+// ADD CANVAS TO HTML DOCUMENT
 document.body.appendChild(app.view);
-
-// REQUIRE CORS
-// const cors = require('cors');
-// app.use(cors());
 
 const reelContainer = new PIXI.Container();
 
@@ -22,13 +26,14 @@ const number3 = "../PIXI/assets/img/3.png"
 const number4 = "../PIXI/assets/img/4.png"
 const number5 = "../PIXI/assets/img/5.png"
 
+
 // NUMBERS LOAD
 app.loader
-  .add(number1, number1)
-  .add(number2, number2)
-  .add(number3, number3)
-  .add(number4, number4)
-  .add(number5, number5)
+  .add(`'${number1}'`, `'${number1}'`)
+  .add(`'${number2}'`, `'${number2}'`)
+  .add(`'${number3}'`, `'${number3}'`)
+  .add(`'${number4}'`, `'${number4}'`)
+  .add(`'${number5}'`, `'${number5}'`)
   .load(onAssetsLoaded);
 
 
