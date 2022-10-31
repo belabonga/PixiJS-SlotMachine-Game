@@ -6,7 +6,7 @@
 const app = new PIXI.Application({ 
   // width : stageWidth,
   // height : stageHeight,
-  backgroundColor: 0x1099bb
+  backgroundColor: 0x000000
 });
 
 // ADD CANVAS TO HTML DOCUMENT
@@ -113,7 +113,7 @@ function buildInterface() {
     fontSize: 36,
     fontStyle: "italic",
     fontWeight: "bold",
-    fill: ["#ffffff", "#00ff99"], // gradient
+    fill: ["#ffffff", "#C39A6F"], // gradient
     stroke: "#4a1850",
     strokeThickness: 5,
     dropShadow: true,
