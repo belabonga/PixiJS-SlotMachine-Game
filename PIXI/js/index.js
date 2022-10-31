@@ -1,12 +1,16 @@
+// STAGE SIZE
+// const stageWidth = 480;
+// const stageHeight = 240;
+
 // CREATE PIXI APP
-const app = new PIXI.Application({ backgroundColor: 0x1099bb });
+const app = new PIXI.Application({ 
+  // width : stageWidth,
+  // height : stageHeight,
+  backgroundColor: 0x1099bb
+});
 
-// ADD CANVAS TO HTML
+// ADD CANVAS TO HTML DOCUMENT
 document.body.appendChild(app.view);
-
-// REQUIRE CORS
-// const cors = require('cors');
-// app.use(cors());
 
 const reelContainer = new PIXI.Container();
 
@@ -15,20 +19,22 @@ const SYMBOL_SIZE = 150;
 let reels = [];
 let tweening = [];
 let slotTextures;
+let running
 
-const number1 = "../PIXI/assets/img/1.png"
-const number2 = "../PIXI/assets/img/2.png"
-const number3 = "../PIXI/assets/img/3.png"
-const number4 = "../PIXI/assets/img/4.png"
-const number5 = "../PIXI/assets/img/5.png"
+const number1 = "assets/img/1.png"
+const number2 = "assets/img/2.png"
+const number3 = "assets/img/3.png"
+const number4 = "assets/img/4.png"
+const number5 = "assets/img/5.png"
+
 
 // NUMBERS LOAD
 app.loader
-  .add(number1, number1)
-  .add(number2, number2)
-  .add(number3, number3)
-  .add(number4, number4)
-  .add(number5, number5)
+  .add(`${number1}`, `${number1}`)
+  .add(`${number2}`, `${number2}`)
+  .add(`${number3}`, `${number3}`)
+  .add(`${number4}`, `${number4}`)
+  .add(`${number5}`, `${number5}`)
   .load(onAssetsLoaded);
 
 
@@ -223,7 +229,8 @@ app.ticker.add((delta) => {
       const r = reels[i];
       // Update blur filter y amount based on speed.
       // This would be better if calculated with time in mind also. Now blur depends on frame rate.
-      r.blur.blurY = (r.position - r.previousPosition) * 8;
+      // r.blur.blurY = (r.position - r.previousPosition) * 8;
+      r.blur = (r.position - r.previousPosition) * 8;
       r.previousPosition = r.position;
 
       // Update symbol positions on reel.
